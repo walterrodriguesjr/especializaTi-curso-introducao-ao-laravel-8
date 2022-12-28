@@ -11,3 +11,14 @@
 
 4-versionamento de código com o Git(e armazenar no github)
 -projeto já instalado, configurado e versionado. Pronto para iniciar o curso.
+
+
+02-CRUD 
+
+5-Conectar laravel ao banco de dados 
+-POST - criado a model, migration e controller em um comando só do artisan 
+    php artisan make:model Post -mc
+-configurada a migration de posts
+-rodada as migration 
+    php artisan migrate
+
