@@ -1,0 +1,7 @@
+01-setup 
+
+1-convite curso gratuito de laravel 8 
+-explicação sobre o curso 
+
+2-ferramentas para o curso de laravel 8 
+-
