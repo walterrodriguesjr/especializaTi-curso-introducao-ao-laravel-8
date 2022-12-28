@@ -4,4 +4,10 @@
 -explicação sobre o curso 
 
 2-ferramentas para o curso de laravel 8 
--
+-docker, vscode, git
+
+3-instalando e configurando o laravel 8 
+-já feito o clone do meu template pronto
+
+4-versionamento de código com o Git(e armazenar no github)
+-projeto já instalado, configurado e versionado. Pronto para iniciar o curso.
