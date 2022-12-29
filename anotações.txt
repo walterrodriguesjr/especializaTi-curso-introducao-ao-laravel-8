@@ -22,3 +22,83 @@
 -rodada as migration 
     php artisan migrate
 
+6-listar registros com o laravel 
+-criada Route, get, PostController, index 
+-criada function index em PostController
+-criado diretório admin/posts, criado view index, retorna para a view os dados em objeto, através do compact()
+
+7-inserir registros com o laravel(feat.seguranhça)
+-criado names para as rotas, para poderem ser usadas nas chamadas na view mesmo que a URl mude,
+    o helper permite que continue usando o mesmo name nas chamadas de route
+-criada Route, get, PostController, create 
+-criada function create em PostController
+-criada a view create 
+-criada Route, posts, PostController, store 
+-criada function store em PostController, criado a lógica que submete dados ao banco
+-sempre inserir o @csrf em formulários de reuisições 
+-criado protected $fillable na model Post, para dizer quais dados podem ser manipulados da class 
+-a class Request, da acesso a dados que vem do de uma requisição(formulário)
+
+8-validações com o laravel 
+-é recomendável criar uma class específica para validações 
+    php artisan make:request StoreUpdatePost
+-já na class de validação, no caso, StoreUpdatePost.php, os passos são: 
+    deixar o authorize() em true, para dizer que tem permissão para fazer a ação 
+    no retorno de rules() insere de fato as validações, recomendável dentro de array
+-não esquecer de, no controler, no caso o PostController, no método de store, importar a class 
+    StoreUpdatePost no lugar de Request, já que a nova class já instancia também a class Request 
+-configurado a visualização dos erros na view create 
+    por default existe a variavel $errors para manipular e apresentar erros na tela 
+-inserido no form da view create, o helper 'old', que possibilita manter dados em input após um erro, 
+    para não precisar ficar reescrevendo em input quando a erro na inserção de dado 
+
+9-exibir detalhes de registro e deletar com o laravel 
+-criada Route, get, PostController, show, com parâmetro {id} 
+-criada function show em PostController,  criado a lógica que recupera somente os dados do id em questão
+-criado na view index, um a href para direcionar para route de posts.show com parâmetro do id 
+-criada a view show 
+-em view show, criado o form de delete
+-criada Route, delete, PostController, destroy, com parâmetro {id} 
+-no form delete, além do @csrf, é necessário também incluir o @method('delete') 
+-criada a lógica na function destroy, em seu retorno, uma message e vai pela session até a view 
+
+10-atualizar registros com o laravel 
+-criada Route, get, PostController, edit, com parâmetro {id} 
+-criada function edit em PostController,  criado a lógica que recupera somente os dados do id em questão
+-criada a view edit 
+-criada Route, put, PostController, update, com parâmetro {id} 
+-criada function update em PostController,  criado a lógica que submete os dados atualizados no banco
+-no form update, além do @csrf, é necessário também incluir o @method('put') 
+
+11-paginação e ordem das rotas com o laravel 
+-paginação - em PostController, index, na chamada de dados, basta usar o método eloquent paginate(), em vez do get 
+    em seguida, o método links() deve ser chamado na view 
+
+12-filtros no laravel 8 
+-na view index, criado o form, post, de pesquisar(filtrar)
+-criada Route, any(aceita todo tipo de requisição), PostController, search
+-criada function search em PostController,  criado a lógica que, usando métodos do eloquent(where etc..)
+    faz a busca que for configurada e em seguida retorna tudo filtrado na view index 
+
+13-reaproveitar códigos blade no laravel 8 
+-criado no diretório posts, o diretório _partials, dentro dele, criado tudo que pode ser reaproveitado 
+-dentro de _partials, foi criado a view form, a qual centraliza dados comuns entre create e edit 
+-em seguida usado a diretiva @include, a qual foi chamado tanto na view create, quanto edit, os dados 
+    que estão na view form 
+        ex: @include('admin.posts._partials.form') 
+
+14-templates blade no laravel 
+-o template define a estrutura base da página 
+-no diretório admin, criado o diretório layouts, e dentro, o arquivo app 
+-dentro de app, configurado a estrutura HTML do template, usando @yield('content') 
+-diretivas de reaproveitamento: 
+    @yield - dentro desta, é onde todas as outras view trabalham, em sua página, neste caso app(template)
+        o que estiver nesta view, mas fora de yield, terá em todas as outras view(conceito template)
+    @extends - as páginas filhas chamam essa diretiva por primeiro, pois trará o conteúdo comum da 
+        view principal(app, que é o template)
+    @section - pode fazer alterações pontuais em algum ponto da página filha
+        quando usa o parâmetro (content), dentro desta section, a view filha define o que terá de 
+        dado específico nesta view, um exemplo é o formulário de requisição, chamando seus dados 
+        particulares e até mesmo chamando outras includes, de uma viu layout
+
+
