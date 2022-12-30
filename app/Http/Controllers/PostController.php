@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUpdatePost;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -21,10 +23,19 @@ class PostController extends Controller
 
     public function store(StoreUpdatePost $request)
     {
+      
         $posts = Post::create([
             'title' => $request->title,
-            'content' => $request->content
-        ]);
+            'content' => $request->content,
+            'image' => $request->image
+            ]);
+            if($request->image->isValid()){
+                //CAPTURA E PERSONALIZA O NOME DO ARQUIVO,COM NOME DO TITLE E O TIPO DE ARQUIVO
+                $nameFile = Str::of($request->title)->slug('-') . '.' .$request->image->getClientOriginalExtension();
+                
+                $image = $request->image->storeAs('posts', $nameFile);
+                $posts['image'] = $image;
+            }
         $posts->save();
         return redirect()->route('posts.index')->with('message', 'Post criado com sucesso!');
     }
@@ -38,6 +49,11 @@ class PostController extends Controller
     public function destroy($id)
     {
         $post = Post::find($id);
+
+        if (Storage::exists($post->image)) {
+            Storage::delete($post->image);
+        }
+
         $post->delete();
         return redirect()->route('posts.index')->with('message', 'Post deletado com sucesso!');
     }
@@ -50,7 +66,21 @@ class PostController extends Controller
 
     public function update(StoreUpdatePost $request, $id)
     {
+
         $post = Post::find($id);
+
+        if($request->image && $request->image->isValid()){
+            if (Storage::exists($post->image)) {
+                Storage::delete($post->image);
+            }
+
+            //CAPTURA E PERSONALIZA O NOME DO ARQUIVO,COM NOME DO TITLE E O TIPO DE ARQUIVO
+            $nameFile = Str::of($request->title)->slug('-') . '.' .$request->image->getClientOriginalExtension();
+            
+            $image = $request->image->storeAs('posts', $nameFile);
+            $post['image'] = $image;
+        }
+
         $post->update([
             'title' => $request->title,
             'content' => $request->content,

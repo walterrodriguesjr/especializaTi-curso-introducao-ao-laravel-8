@@ -63,7 +63,13 @@ class TestCommand extends Command
      */
     public function handle()
     {
-        if ((int) \PHPUnit\Runner\Version::id()[0] < 9) {
+        $phpunitVersion = \PHPUnit\Runner\Version::id();
+
+        if ((int) $phpunitVersion[0] === 1) {
+            throw new RequirementsException('Running PHPUnit v10 or Pest v2 requires Collision ^7.0.');
+        }
+
+        if ((int) $phpunitVersion[0] < 9) {
             throw new RequirementsException('Running Collision ^5.0 artisan test command requires at least PHPUnit ^9.0.');
         }
 
@@ -210,6 +216,8 @@ class TestCommand extends Command
 
         $options = array_values(array_filter($options, function ($option) {
             return ! Str::startsWith($option, '--env=')
+                && $option != '-q'
+                && $option != '--quiet'
                 && $option != '--coverage'
                 && ! Str::startsWith($option, '--min');
         }));
@@ -232,6 +240,8 @@ class TestCommand extends Command
         $options = array_values(array_filter($options, function ($option) {
             return ! Str::startsWith($option, '--env=')
                 && $option != '--coverage'
+                && $option != '-q'
+                && $option != '--quiet'
                 && ! Str::startsWith($option, '--min')
                 && ! Str::startsWith($option, '-p')
                 && ! Str::startsWith($option, '--parallel')

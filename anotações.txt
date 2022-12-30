@@ -102,3 +102,60 @@
         particulares e até mesmo chamando outras includes, de uma viu layout
 
 
+03-upload de arquivos 
+
+15-configurações no laravel para upload de arquivos 
+-inserido os campos 'image' na migration, model e StoreUpdatePost de Post 
+-configurado em .env e filesystems.php o FILESYSTEM_DRIVER 
+-criado o link simbólico de storage entre public e storage/app/public 
+    php artisan storage:link 
+
+16-upload de arquivos no laravel(pt-1)
+-na view form de _partials, incluído o input do tipo file 
+-nas views create e edit, na linha do form, incluído o enctype="multipart/form-data" 
+-criando a lógica de submeter a imagem em PostController, store. Envia a imagem para a pasta storage/app/public/posts(posts criado na lógica), e a string para o banco
+-pernonalizando o nome do arquivo em PostController, store:
+    importar a bibliote: use Illuminate\Support\Str;
+    usando o helper do laravel, getClientOriginalExtension();
+-configurada a view index para exibir as imagens em banco
+
+17-upload de arquivos no laravel(pt-2)
+-consiste em. ao editar(atualizar) um post, ele delete a imagem antiga e fique somente a nova 
+-usado o helper do laravel Storage, para que, ao atualizar o post, se inserir uma nova imagem, a antiga deste
+    post é apagada do banco de do storage, mantendo somente a atual. 
+-usado a mesma lógica para quando deletar o post, e não ficar a imagem pendente no storage 
+
+18-validações de upload no laravel 
+-configurado o StoreUpdatePost.php, para que, em rules(), title, durante um update, seja aceito a atualização 
+    de imagem, mesmo que o titul oe o cotenudo não sejam alterados, e não gere erro que o titulo já existe, 
+        sendo que o titulo encontrado é do próprio post 
+-segunda maneira da técnica acima: 
+    utilizando o helper Rule::, para fazer a mesma coisa anterior 
+-durante edição(atualização) manter a imagem que já tinha, caso não deseje altera-la, e não seja preciso 
+    recadastra-lá 
+
+
+04-autenticação 
+
+19-autenticação no laravel 8 (starter kits)
+-implementação para que, somente pessoas autenticadas possam fazer ações no sistema 
+-importante, após a instalação, o laravel irá deletar todas as Routes criadas, sendo então, 
+    necessário fazer o sistema de login antes de tudo, ou se fazer depois, na parte de 
+    controle de código-fonte do git, desfazer alterações no arquivo web.php
+-instalando o módulo de autenticação básica nativa do laravel, breeze 
+    composer update (nesta versão do laravel foi necessário atualizar a versão do composer)
+    composer require laravel/breeze --dev
+    php artisan breeze:install
+-em seguida, instalar e atualizar o npm, e rodar o npm e gerar o laravel-mix e os novos acsses
+    npm install && npm run dev
+-organizar as routes geradas automaticamente pelo breeze, como auth e dashboard 
+
+
+05-final 
+
+20-final do curso de laravel 8 
+-instalando o tailwind 
+    npm install -D tailwindcss
+    npx tailwindcss init
+-teve que ser por CDN, instalação não deu boa
+-ainda falta incluir todas classes de tailwind, porem, estrutura já pronta
