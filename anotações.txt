@@ -158,4 +158,4 @@
     npm install -D tailwindcss
     npx tailwindcss init
 -teve que ser por CDN, instalação não deu boa
--ainda falta incluir todas classes de tailwind, porem, estrutura já pronta
+-FINALIZADO
